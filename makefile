@@ -5,4 +5,4 @@ run: all
 	./hw
 
 clean:
-	rm -f *~ hw
+	rm -f *~ hw *# *.sh
