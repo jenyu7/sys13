@@ -15,7 +15,19 @@ int main()
   pipe(p2);
   f = fork();
 
-  if (f == 0)
+  if (f != 0)
+    {
+      close(p1[READ]);
+      int in = 2;
+      write(p1[WRITE], in, sizeof(in));
+      printf("Sending the number 2 to my child...\n");
+      //wait(null);
+      close(p2[WRITE]);
+      int out;
+      read(p2[READ], out, sizeof(out));
+      printf("Received back the number: %d...", out);
+    }
+  else
     {
       close(p1[WRITE]);
       int num;
@@ -25,18 +37,6 @@ int main()
       num = num + 2 - 1;
       printf("Did quick maths on number, sending back to parent...\n");
       write(p2[WRITE], num, sizeof(num));
-    }
-  else
-    {
-      close(p1[READ]);
-      int in = 2;
-      write(p1[WRITE], in, sizeof(in));
-      printf("Sending the number 2 to my child...\n");
-      wait(null);
-      close(p2[WRITE]);
-      int out;
-      read(p2[READ], out, sizeof(out));
-      printf("Received back the number: %d...", out);
     }
   return 0;
 }
