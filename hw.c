@@ -19,22 +19,27 @@ int main()
     {
       close(p1[READ]);
       int in = 2;
+      printf("[parent] Sending the number %d to my child...\n", in);
+      sleep(1);
       write(p1[WRITE], &in, sizeof(in));
-      printf("Sending the number 2 to my child...\n");
       //wait(null);
       close(p2[WRITE]);
       int out;
       read(p2[READ], &out, sizeof(out));
-      printf("Received back the number: %d...\n", out);
+      printf("[parent] Received back the number: %d...\n", out);
       exit(0);
     }
   close(p1[WRITE]);
   int num;
   read(p1[READ], &num, sizeof(num));
-  printf("Reading the number 2 from parent...\n");
+  printf("[child] Reading the number %d from parent...\n", num);
+  sleep(1);
   close(p2[READ]);
   num = num + 2 - 1;
-  printf("Did quick maths on number, sending back to parent...\n");
+  printf("[child] Doing quick maths: %d + 2 - 1 = ...\n", num);
+  sleep(4);
+  printf("[child] Did quick maths on number, sending back to parent...\n");
+  sleep(1);
   write(p2[WRITE], &num, sizeof(num));
   return 0;
 }
